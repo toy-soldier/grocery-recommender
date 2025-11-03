@@ -1,0 +1,20 @@
+[project]
+name = "grocery-delivery"
+version = "0.1.0"
+description = "An AI-powered system for recommending groceries to customers based on their grocery lists."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.120.4",
+    "flask>=3.1.2",
+    "openapi>=2.0.0",
+    "python-dotenv>=1.2.1",
+    "uvicorn>=0.38.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.3",
+]
