@@ -120,3 +120,25 @@ In production, the **agent’s catalog query** could be replaced by a vector dat
 The architecture is designed for **small-to-medium retailers** but can scale to **enterprise-grade** infrastructures through modular substitution of the AI and retrieval layers.
 
 ---
+
+## Model Architecture Overview
+
+The project’s AI logic is organized around a **two-model concept** — inspired by real-world production systems, but implemented here as a simplified proof-of-concept.
+
+1. **Parsing Model**
+
+    - Handles natural-language understanding.
+    - Interprets free-form grocery list entries (e.g., “3 packs of almond milk”) into structured data containing `item`, `quantity`, and `unit`.
+    - In a production deployment this role would typically be handled by a large language model (LLM) via a managed service (for example, **Amazon Bedrock**) or a specialized NLP pipeline.
+
+2. **Recommendation Model**
+
+    - Takes the parsed result and cross-references it with the store catalog.
+    - Returns the best product matches (SKUs), match confidence, and any additional metadata required (price, inventory).
+    - In production this is a good fit for a RAG (retrieval-augmented generation) approach or a lighter-weight model backed by precomputed embeddings / vector search.
+
+**How this maps to the demo:** both roles are implemented using the OpenAI API for simplicity and speed of prototyping. The architecture is intentionally modular so each role can be swapped independently (for example, replace the parsing LLM with Bedrock, or replace the recommendation step with a dedicated vector-store + retrieval service).
+
+> **Note:** This section describes a production-capable pattern for clarity. The repository remains a portfolio-scale demonstration focused on system design and integration — not a production-ready deployment.
+
+---
