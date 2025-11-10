@@ -74,25 +74,59 @@ Finally, in **steps 16–17**, the **agent** consolidates everything and sends a
 
 The project uses an environment file (`.env`) for credentials:
 
+```bash
     OPENAI_API_KEY=<your OpenAI API key>
+```
+
+---
+
+## Unit Testing
+
+All three applications in this project include unit tests implemented with **pytest** and integrated **coverage** tracking.
+
+Run the full test suite with:
+
+```bash
+pytest --cov-config=tests/results/.coveragerc | tee tests/results/results.txt
+```
+
+This command will:
+
+- Save the full test log to `tests/results/results.txt`
+- Generate an HTML coverage report at `tests/results/cov_html/index.html`
+
+You can open the HTML report in your browser to explore detailed coverage results.
+
+> **Note:** The project uses two separate configuration files by design:
+
+- pytest.ini — controls pytest behavior (test discovery, source paths, report locations and global options).
+- .coveragerc — controls coverage settings (file exclusions).
+
+Keeping these configurations separate ensures clarity and makes it easier to fine-tune testing and coverage independently.
 
 ---
 
 ## Repository Structure
 
+```bash
     grocery-recommender/
     │
     ├── apps/               # folder containing the applications
     │   ├── agent/          # files for the agent application
     │   ├── api_server/     # files for the API server
     │   └── web_app/        # files for the web application
-    │
-    ├── tests/               # folder containing the unit tests of the applications
+    ├── tests/              # folder containing the unit tests of the applications
     │   ├── agent/          # files for testing the agent application
     │   ├── api_server/     # files for testing the API server
-    │   └── web_app/        # files for testing the web application
-    ├── .env                 # credentials file
+    │   ├── web_app/        # files for testing the web application
+    │   └── results/        # test results
+    ├── .env                # credentials file
+    ├── .python-version     # Python version
+    ├── pyproject.toml      # project settings
+    ├── pytest.ini          # pytest settings
+    ├── uv.lock             # project dependency settings
     └── README.md
+```
 
 ---
 

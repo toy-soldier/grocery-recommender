@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>File Upload Page</title>
+	</head>
+	<body>
+	    {% if error is not none %}
+		<font color="red">{{ error }}</font>
+		{% endif %}
+
+		<p>Please upload your grocery list in plain text format, one product per line.</p>
+		<form action="http://localhost:5000/recommender" method="POST" enctype="multipart/form-data">
+			<input type="file" name="file" /><p />
+			<input type="submit" value="Review my grocery list!" />
+		</form>
+		<p>
+			<b><i>Sample file:</i></b><br />
+			<code>list.txt</code><i> containing: </i><br />
+			<textarea rows="3" col="10">3 packs of milk		1 bag of sugar</textarea>
+		</p>
+	</body>
+</html>
