@@ -1,12 +1,17 @@
 """This module defines test fixtures."""
+
+import unittest.mock
+
 import flask.testing
 import pytest
+import pytest_mock.plugin
+
 from apps.web_app import file_uploader
 
 
 @pytest.fixture
 def test_client() -> flask.testing.FlaskClient:
-    """ Defines a pytest fixture for Flask web application. """
+    """Defines a pytest fixture for Flask web application."""
     flask_app = file_uploader.app
 
     # Flask provides a way to test your application by exposing the Werkzeug test Client
@@ -21,3 +26,8 @@ def test_client() -> flask.testing.FlaskClient:
     yield testing_client
 
     ctx.pop()
+
+
+@pytest.fixture
+def mocked_agent(mocker: pytest_mock.plugin.MockerFixture) -> unittest.mock.MagicMock:
+    return mocker.patch("apps.agent.main.main")
