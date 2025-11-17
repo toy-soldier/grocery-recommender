@@ -18,7 +18,7 @@ sequenceDiagram
     actor Customer
     participant WebApp
     participant Agent
-    participant OpenAI
+    participant OpenAI as OpenAI (LLM Service)
     participant server as API Server
     participant Database
     link OpenAI: Website @ https://platform.openai.com/
@@ -30,10 +30,13 @@ sequenceDiagram
     WebApp ->> Customer: display upload page
     Customer ->> WebApp: upload grocery list file
     WebApp ->> Agent: file contents
-    Agent ->> OpenAI: request to parse grocery list
-    OpenAI ->> Agent: response
-    Agent ->> OpenAI: request to recommend products
-    OpenAI ->> Agent: response
+
+    %% AI logic: two-model architecture (single participant, two calls)
+    Agent ->> OpenAI: GPT-4 parses grocery list (structured JSON)
+    OpenAI ->> Agent: parsed JSON
+    Agent ->> OpenAI: GPT-3 recommends products using parsed JSON + catalog
+    OpenAI ->> Agent: recommendations
+
     loop each product recommendation
         Agent ->> server: request product details
         server ->> Database: SELECT query
@@ -70,12 +73,47 @@ Finally, in **steps 16–17**, the **agent** consolidates everything and sends a
 
 ---
 
+## Setup Instructions
+
+First ensure that `uv` is already setup on your machine.  More information on `uv` is available at [https://docs.astral.sh/uv/]
+
+1. Clone this repository to an appropriate folder on your local.  Assume this folder is at
+
+    ```bash
+    path/to/repository/grocery-recommender/
+    ```
+
+2. Create a virtual environment for the project, and download project dependencies.  At `path/to/repository/grocery-recommender/`, open a terminal and run
+
+    ```bash
+    uv sync
+    ```
+
+3. Create the environment file
+
+    ```bash
+    path/to/repository/grocery-recommender/.env
+    ```
+
+    (refer to section **Environment Setup** below for details).
+
+4. Optionally execute the unit tests.  At `path/to/repository/grocery-recommender/`, open a terminal and run the tests (refer to section **Unit Testing** below for details).
+
+5. Execute each application, in this order:
+    1. API Server (`apps/api_server`)
+    2. Agent (`apps/agent`)
+    3. Web Application (`apps/web_app`)
+
+    Refer to each application's `README.MD` for execution details.
+
+---
+
 ## Environment Setup
 
 The project uses an environment file (`.env`) for credentials:
 
 ```bash
-    OPENAI_API_KEY=<your OpenAI API key>
+OPENAI_API_KEY=<your OpenAI API key>
 ```
 
 ---
@@ -96,11 +134,14 @@ This command will:
 - Generate an HTML coverage report at `tests/results/cov_html/index.html`
 
 You can open the HTML report in your browser to explore detailed coverage results.
+Here is a screenshot:
+
+![Coverage report](assets/coverage.png)  
 
 > **Note:** The project uses two separate configuration files by design:
 
-- pytest.ini — controls pytest behavior (test discovery, source paths, report locations and global options).
-- .coveragerc — controls coverage settings (file exclusions).
+- `pytest.ini` — controls pytest behavior (test discovery, source paths, report locations and global options).
+- `.coveragerc` — controls coverage settings (file exclusions).
 
 Keeping these configurations separate ensures clarity and makes it easier to fine-tune testing and coverage independently.
 
@@ -115,6 +156,7 @@ Keeping these configurations separate ensures clarity and makes it easier to fin
     │   ├── agent/          # files for the agent application
     │   ├── api_server/     # files for the API server
     │   └── web_app/        # files for the web application
+    ├── assets/             # folder containing project screenshots
     ├── tests/              # folder containing the unit tests of the applications
     │   ├── agent/          # files for testing the agent application
     │   ├── api_server/     # files for testing the API server
@@ -153,26 +195,46 @@ In production, the **agent’s catalog query** could be replaced by a vector dat
 
 The architecture is designed for **small-to-medium retailers** but can scale to **enterprise-grade** infrastructures through modular substitution of the AI and retrieval layers.
 
+- **Integrate customer context** (e.g., purchase history, preferred brands, dietary restrictions) to further personalize recommendations. This information can be retrieved from a user profile service and included in the prompt or RAG context.
+
 ---
 
 ## Model Architecture Overview
 
-The project’s AI logic is organized around a **two-model concept** — inspired by real-world production systems, but implemented here as a simplified proof-of-concept.
-
-1. **Parsing Model**
-
-    - Handles natural-language understanding.
-    - Interprets free-form grocery list entries (e.g., “3 packs of almond milk”) into structured data containing `item`, `quantity`, and `unit`.
-    - In a production deployment this role would typically be handled by a large language model (LLM) via a managed service (for example, **Amazon Bedrock**) or a specialized NLP pipeline.
-
-2. **Recommendation Model**
-
-    - Takes the parsed result and cross-references it with the store catalog.
-    - Returns the best product matches (SKUs), match confidence, and any additional metadata required (price, inventory).
-    - In production this is a good fit for a RAG (retrieval-augmented generation) approach or a lighter-weight model backed by precomputed embeddings / vector search.
-
-**How this maps to the demo:** both roles are implemented using the OpenAI API for simplicity and speed of prototyping. The architecture is intentionally modular so each role can be swapped independently (for example, replace the parsing LLM with Bedrock, or replace the recommendation step with a dedicated vector-store + retrieval service).
-
-> **Note:** This section describes a production-capable pattern for clarity. The repository remains a portfolio-scale demonstration focused on system design and integration — not a production-ready deployment.
+The project’s AI logic is organized around a **two-model concept** — implemented using OpenAI’s GPT models, but designed to reflect a production-style architecture.
 
 ---
+
+### 1. Parsing Model (GPT-4)
+
+- Handles natural-language understanding.  
+- Interprets free-form grocery list entries (e.g., “3 packs of almond milk”) into structured data containing `item`, `quantity`, and `unit`.  
+- Outputs **structured JSON**, ensuring the next model receives clean, predictable input.  
+- In a production deployment this role would typically be handled by a large language model (LLM) via a managed service (for example, **Amazon Bedrock**) or a specialized NLP pipeline.
+
+---
+
+### 2. Recommendation Model (GPT-3)
+
+- Takes the parsed result and cross-references it with the store catalog.  
+- Returns the best product matches (SKUs), match confidence, and any additional metadata required (price, inventory).  
+- Requires less reasoning power than parsing because the input is already structured, reducing cost and latency while maintaining accuracy.  
+- In production this is a strong fit for a RAG (retrieval-augmented generation) approach or a lightweight model backed by embeddings / vector search.
+
+---
+
+### Rationale for model selection
+
+- Parsing is **precision-critical**, so a powerful model (GPT-4) is used.  
+- Recommendation is **context-driven** and uses structured input, so a lighter model (GPT-3) suffices.  
+- This pattern demonstrates thoughtful resource allocation and clearly illustrates the **two-model architecture**.  
+
+> **Note:** Both models are implemented via OpenAI in this demo for simplicity.  
+> In a production environment, different models or providers may be used for each role.  
+> The architecture is intentionally modular to allow for swapping of components.
+
+---
+
+### Agent Design Pattern — Plan-and-Execute
+
+This system follows a simplified **Plan-and-Execute agent pattern**, where one model interprets user input (“planning”) and another model executes based on that structured output. In this design, the parsing performed by GPT-4 acts as the planning phase, producing a well-defined JSON representation of the user’s intent. The recommendation phase, handled by GPT-3, acts as the execution stage, using that structured plan together with the store catalog to generate product matches. This mirrors the architecture used in many real-world production AI pipelines: deterministic orchestration with clearly separated model responsibilities, rather than an autonomous free-form agent loop.
