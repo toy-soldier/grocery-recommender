@@ -7,3 +7,5 @@ SQLITE_SEED_SCRIPT = "assets/seed.sql"
 
 # allow FastAPI to use the same SQLite database in different threads
 SQLITE_CONNECT_ARGS = {"check_same_thread": False}
+
+ERROR_NOT_FOUND = "The specified product was not found."
