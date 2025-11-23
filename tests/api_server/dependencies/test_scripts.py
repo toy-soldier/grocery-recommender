@@ -47,7 +47,9 @@ def test_main(mocker, test_input, expected):
 
 def test_seed_script():
     temp_engine = database.get_engine(
-        database_uri=constants.SQLITE_URI.format(":memory:")
+        database_uri=constants.SQLITE_URI.format(
+            "file:seed_tests?mode=memory&cache=shared"
+        )
     )
     scripts.create(temp_engine)
     scripts.seed(temp_engine, limit=3)

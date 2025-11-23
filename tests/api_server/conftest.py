@@ -20,7 +20,9 @@ def test_client() -> TestClient:
 def patch_global_engine() -> None:
     """Patch the module-level engine to use an in-memory SQLite DB."""
     test_engine = database.get_engine(
-        database_uri=constants.SQLITE_URI.format(":memory:")
+        database_uri=constants.SQLITE_URI.format(
+            "file:endpoints_test?mode=memory&cache=shared"
+        )
     )
     scripts.create(test_engine)
     scripts.seed(test_engine, 17)

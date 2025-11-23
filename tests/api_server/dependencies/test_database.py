@@ -24,8 +24,11 @@ def test_get_session(mocker):
     mocked_get_engine.return_value = "test"
 
     generated_session = list(database.get_session())[0]
-    assert str(generated_session.get_bind().url) == "sqlite:///:memory:"
+    assert (
+        str(generated_session.get_bind())
+        == "Engine(sqlite:///file:endpoints_test?cache=shared&mode=memory)"
+    )
 
     mocker.patch.object(database, "engine", None)
     generated_session = list(database.get_session())[0]
-    assert generated_session.get_bind() == "test"
+    assert str(generated_session.get_bind()) == "test"
