@@ -7,12 +7,13 @@ from apps.api_server.controllers import products
 from apps.api_server.dependencies import database
 from apps.api_server.schemas import products as sp
 
+prefix = "/api/v1/products"
+route_of_listing = "/?page={0}&products_per_page={1}"
 
 router = APIRouter(
-    prefix="/api/v1/products",
+    prefix=prefix,
     tags=["products"],
 )
-route_of_listing = "/?page={0}&products_per_page={1}"
 
 
 @router.get(path=route_of_listing.split("?")[0], status_code=status.HTTP_200_OK)
@@ -23,7 +24,7 @@ async def retrieve_listing(
 ) -> sp.WrappedProductListing:
     """Handle GET listing request."""
     retrieved_products, metadata = products.retrieve_listing(
-        session, page, products_per_page, route_of_listing
+        session, page, products_per_page, prefix + route_of_listing
     )
     product_listing = []
     for product in retrieved_products:

@@ -24,6 +24,10 @@ def patch_global_engine() -> None:
             "file:endpoints_test?mode=memory&cache=shared"
         )
     )
+
+    # NOTE: SQLite might create a zero-byte file named `file` for named in-memory DBs.
+    # It's harmless and can be ignored.
+
     scripts.create(test_engine)
     scripts.seed(test_engine, 17)
 
