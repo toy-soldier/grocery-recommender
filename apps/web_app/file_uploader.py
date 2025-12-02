@@ -20,27 +20,27 @@ def recommender() -> tuple[str, int]:
     """Read the input file and forward its contents to the agent."""
     f = request.files["file"]
 
-    error, content = validate(f)
+    error, filename, content = validate(f)
     if error:
         return home(error, 400)
     return render_template(
-        "recommendations.html", products=ai.send_to_agent(content)
+        "recommendations.html", products=ai.send_to_agent(filename, content)
     ), 200
 
 
-def validate(f: FileStorage) -> tuple[str | None, str | None]:
+def validate(f: FileStorage) -> tuple[str | None, str | None, str | None]:
     """Perform validation on the uploaded file."""
     if f.filename == "":
-        return "Please upload your grocery list file.", None
+        return "Please upload your grocery list file.", None, None
     if f.mimetype != "text/plain":
-        return "Please upload a valid text file with extension .txt.", None
+        return "Please upload a valid text file with extension .txt.", None, None
 
     content = f.read()
     content = str(content, "utf-8")
 
     if len(content.strip()) == 0:
-        return "The file is empty.", None
-    return None, content
+        return "The file is empty.", None, None
+    return None, f.filename, content
 
 
 if __name__ == "__main__":

@@ -12,8 +12,8 @@ def test_retrieve_listing(test_client):
             {"full_name": "Twilight pretzels - 200g", "sku": 50221},
             {"full_name": "Luminous ground beef - 500g", "sku": 50238},
         ],
-        "next": "/?page=6&products_per_page=3",
-        "previous": "/?page=4&products_per_page=3",
+        "next": "/api/v1/products/?page=6&products_per_page=3",
+        "previous": "/api/v1/products/?page=4&products_per_page=3",
     }
 
 
@@ -25,7 +25,7 @@ def test_retrieve_listing_blank_page(test_client):
         "count": 0,
         "data": [],
         "next": None,
-        "previous": "/?page=1&products_per_page=30",
+        "previous": "/api/v1/products/?page=1&products_per_page=30",
     }
 
 
@@ -46,10 +46,9 @@ def test_retrieve_listing_no_arguments(test_client):
 def test_count_calls_to_retrieve_full_listing(test_client):
     """Count the number of calls needed to get the entire catalog."""
     calls = 0
-    prefix = "/api/v1/products"
-    url = "?products_per_page=7"
+    url = "/api/v1/products/?products_per_page=7"
     while url:
-        response = test_client.get(prefix + url)
+        response = test_client.get(url)
         assert response.status_code == 200
         calls += 1
         resp = response.json()

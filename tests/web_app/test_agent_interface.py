@@ -11,12 +11,13 @@ filename = "mocked_response.json"
 sample_response = json.load(open(TEST_FILES_LOCATION + filename, "rb"))
 
 
-def test_no_recommendations(mocked_agent):
+def \
+        test_no_recommendations(mocked_agent):
     """Unit test for a grocery list with no recommendations."""
     response = copy.copy(sample_response)
     response["recommendations"] = []
     mocked_agent.return_value = response
-    html = ai.send_to_agent("test")
+    html = ai.send_to_agent("test", "")
     assert html == ""
 
 
@@ -25,13 +26,13 @@ def test_one_product_no_suggestions(mocked_agent):
     response = copy.copy(sample_response)
     response["recommendations"] = [{"query": "product A", "suggestions": []}]
     mocked_agent.return_value = response
-    html = ai.send_to_agent("test")
+    html = ai.send_to_agent("test", "")
     assert html == "<h4>For your requirement `product A`...</h4>"
 
 
 def test_full_recommendations(mocked_agent):
     """Unit test for a grocery list with 2 sets of product recommendations."""
     mocked_agent.return_value = sample_response
-    html = ai.send_to_agent("test")
+    html = ai.send_to_agent("test", "")
     assert len(re.findall("<h4>", html)) == 2
     assert len(re.findall("checkbox", html)) == 6
