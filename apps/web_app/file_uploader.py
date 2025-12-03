@@ -3,10 +3,11 @@
 from flask import Flask, render_template, request
 from werkzeug.datastructures.file_storage import FileStorage
 
-import apps.web_app.agent_interface as ai
-
+from apps.web_app import agent_interface
+from apps.agent import orchestrator
 
 app = Flask(__name__)
+grocery_agent = orchestrator.init_agent()
 
 
 @app.route("/")
@@ -24,7 +25,8 @@ def recommender() -> tuple[str, int]:
     if error:
         return home(error, 400)
     return render_template(
-        "recommendations.html", products=ai.send_to_agent(filename, content)
+        "recommendations.html",
+        products=agent_interface.send_to_agent(filename, content, grocery_agent),
     ), 200
 
 

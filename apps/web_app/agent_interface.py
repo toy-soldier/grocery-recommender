@@ -1,14 +1,14 @@
 """This module is the web application's interface to the agent application."""
 
-import apps.agent.orchestrator as agent
+from apps.agent import orchestrator
 
 
-def send_to_agent(filename: str, content: str) -> str:
+def send_to_agent(filename: str, content: str, agent: orchestrator.GroceryAgent) -> str:
     """
     Send the contents of the grocery list file to the agent
     and return the agent's response.
     """
-    response = agent.main(filename, format_content(content))
+    response = agent.process(filename, format_content(content))
     return transform_response(response)
 
 

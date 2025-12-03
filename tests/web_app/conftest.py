@@ -30,4 +30,4 @@ def test_client() -> flask.testing.FlaskClient:
 
 @pytest.fixture
 def mocked_agent(mocker: pytest_mock.plugin.MockerFixture) -> unittest.mock.MagicMock:
-    return mocker.patch("apps.agent.orchestrator.main")
+    return mocker.patch("apps.agent.orchestrator.GroceryAgent")
