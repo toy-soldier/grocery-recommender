@@ -1,0 +1,12 @@
+"""This module contains the application constants."""
+
+PARSER_LLM_MODEL = "gpt-4.1"
+RECOMMENDER_LLM_MODEL = "gpt-3.5-turbo"
+
+PARSER_PROMPT_FILE = "assets/parser_prompt.txt"
+RECOMMENDER_PROMPT_FILE = "assets/recommender_prompt.txt"
+
+GROCERY_API_SERVER_BASE_URL = "http://localhost:8000"
+GROCERY_API_SERVER_GET_LISTING = "/api/v1/products/"
+GROCERY_API_SERVER_GET_PRODUCT = "/api/v1/products/{}"
+GROCERY_API_SERVER_HEALTH_CHECK = "/health"
