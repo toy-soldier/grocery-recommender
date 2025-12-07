@@ -1,5 +1,4 @@
 """Unit tests for file_uploader.py"""
-import apps.web_app.file_uploader
 
 TEST_FILES_LOCATION = "tests/web_app/test_files/"
 
