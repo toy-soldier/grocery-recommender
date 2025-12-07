@@ -1,10 +1,12 @@
 """Unit tests for file_uploader.py"""
+import apps.web_app.file_uploader
 
 TEST_FILES_LOCATION = "tests/web_app/test_files/"
 
 
-def test_home(test_client):
+def test_home(test_client, mocker):
     """Unit test for home()"""
+    mocker.patch("apps.web_app.file_uploader.orchestrator.init_agent")
     response = test_client.get("/")
     assert response.status_code == 200
 

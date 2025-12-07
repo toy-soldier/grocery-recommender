@@ -6,13 +6,17 @@ from werkzeug.datastructures.file_storage import FileStorage
 from apps.web_app import agent_interface
 from apps.agent import orchestrator
 
+grocery_agent = None
 app = Flask(__name__)
-grocery_agent = orchestrator.init_agent()
 
 
 @app.route("/")
 def home(error: str | None = None, status_code: int = 200) -> tuple[str, int]:
     """Display the application's home page."""
+    global grocery_agent
+    if not grocery_agent:
+        grocery_agent = orchestrator.init_agent()
+
     return render_template("upload.html", error=error), status_code
 
 
