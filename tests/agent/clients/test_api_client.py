@@ -5,7 +5,7 @@ import requests
 import tenacity
 
 from apps.agent.clients import api_client
-from apps.agent.dependencies import exceptions as exc
+from apps.agent.dependencies import constants, exceptions as exc
 
 
 def test_get_product_details_on_existing_product(mocker, mocked_get):
@@ -54,7 +54,7 @@ def test_get_product_details_raises_504(mocker, mocked_get):
     mocked_get.return_value = mocked_response
     with pytest.raises(tenacity.RetryError):
         client.get_product_details(999)
-    assert mocked_get.call_count == 3
+    assert mocked_get.call_count == constants.GROCERY_API_SERVER_RETRIES
 
 
 def test_get_product_details_raises_some_other_error(mocker, mocked_get):
@@ -63,7 +63,7 @@ def test_get_product_details_raises_some_other_error(mocker, mocked_get):
     mocked_get.side_effect = Exception("Something went wrong")
     with pytest.raises(tenacity.RetryError):
         client.get_product_details(999)
-    assert mocked_get.call_count == 3
+    assert mocked_get.call_count == constants.GROCERY_API_SERVER_RETRIES
 
 
 def test_get_product_details_on_existing_product_succeeds_after_two_failures(
@@ -144,7 +144,7 @@ def test_get_product_listing_raises_504(mocker, mocked_get):
     mocked_get.return_value = mocked_response
     with pytest.raises(tenacity.RetryError):
         client.get_product_listing(1, 5)
-    assert mocked_get.call_count == 3
+    assert mocked_get.call_count == constants.GROCERY_API_SERVER_RETRIES
 
 
 def test_get_product_listing_raises_some_other_error(mocker, mocked_get):
@@ -153,7 +153,7 @@ def test_get_product_listing_raises_some_other_error(mocker, mocked_get):
     mocked_get.side_effect = Exception("Something went wrong")
     with pytest.raises(tenacity.RetryError):
         client.get_product_listing(1, 5)
-    assert mocked_get.call_count == 3
+    assert mocked_get.call_count == constants.GROCERY_API_SERVER_RETRIES
 
 
 def test_get_product_listing_succeeds_after_two_failures(mocker, mocked_get):

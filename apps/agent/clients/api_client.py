@@ -27,7 +27,7 @@ class APIClient:
     )
     def get_product_details(
         self, product_id: int
-    ) -> dict[str, str | int | float] | None:
+    ) -> dict[str, dict[str, str | int | float]] | None:
         """Return a product's details."""
         self.logger.debug(f"Getting details of {product_id=}...")
         url = c.GROCERY_API_SERVER_BASE_URL + c.GROCERY_API_SERVER_GET_PRODUCT.format(
