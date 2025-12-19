@@ -1,6 +1,6 @@
 """This module defines the Pydantic models."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ProductLineItem(BaseModel):
@@ -19,6 +19,7 @@ class ProductCatalog(BaseModel):
 class ParsedLineItem(BaseModel):
     """Schema for a line parsed from the user's grocery list."""
 
+    query: str
     product: str
     quantity: float | None = None
     unit: str | None = None
@@ -37,26 +38,54 @@ class CatalogForFuzzyMatching(BaseModel):
     grocery_list: ParsedGroceryList
 
 
-class PrunedCatalog(ProductCatalog):
-    """Schema of the subset of the store catalog."""
+class PrunedCatalogPerGroceryListLine(ParsedLineItem):
+    """Schema of the per-line subset of the store catalog."""
 
-    pass
-
-
-class CatalogForRecommendation(BaseModel):
-    """Schema for the data to be forwarded to the recommendation service."""
-
-    catalog: PrunedCatalog
-    grocery_list: ParsedGroceryList
+    candidates: list[ProductLineItem] = Field(default_factory=list)
 
 
-class RecommendationLineItem(ProductLineItem):
+class PrunedCatalogList(BaseModel):
+    """
+    Schema for the data to be forwarded to the recommender;
+    populated by the fuzzy filter service.
+    """
+
+    lines: list[PrunedCatalogPerGroceryListLine]
+
+
+class LLMRecommendationLineItem(ProductLineItem):
     """Schema for a product recommendation."""
 
     confidence: float
 
 
-class RecommendationList(BaseModel):
-    """Schema for the recommendations of the recommendation service."""
+class LLMRecommendationListPerGroceryListLine(BaseModel):
+    """Schema for the per-line recommendations."""
 
-    recommendations: list[RecommendationLineItem]
+    query: str
+    recommendations: list[LLMRecommendationLineItem]
+
+
+class LLMRecommendationList(BaseModel):
+    """Schema for the recommender service's recommendation list."""
+
+    recommendations: list[LLMRecommendationListPerGroceryListLine]
+
+
+class AgentRecommendationLineItem(LLMRecommendationLineItem):
+    """Schema for a product recommendation from the agent."""
+
+    quantity: int
+    unit_price: float
+
+
+class AgentRecommendationListPerGroceryListLine(BaseModel):
+    """Schema for the per-line recommendations."""
+
+    query: str
+    suggestions: list[AgentRecommendationLineItem]
+
+class AgentRecommendationList(BaseModel):
+    """Schema for the agent's final recommendation list."""
+
+    recommendations: list[AgentRecommendationListPerGroceryListLine]

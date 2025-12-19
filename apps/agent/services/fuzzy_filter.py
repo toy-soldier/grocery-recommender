@@ -21,10 +21,9 @@ class FuzzyFilterService:
 
     def filter_catalog(
         self, data: models.CatalogForFuzzyMatching
-    ) -> models.PrunedCatalog:
-        """Returns a pruned catalog with only the top N matches per grocery item."""
-        pruned_catalog = {}
-
+    ) -> models.PrunedCatalogList:
+        """Returns a pruned catalog per line item of the grocery list."""
+        pruned_list = []
         store_catalog = data.catalog.catalog
         grocery_list = data.grocery_list.grocery_list
         self.logger.debug(f"Got {grocery_list=}, now pruning store catalog...")
@@ -40,13 +39,18 @@ class FuzzyFilterService:
                 score_cutoff=self.min_score,
             )
 
+            candidates = []
             # matches is a list of (product_description, score, sku)
             for match_name, score, key in matches:
-                pruned_catalog[key] = match_name
+                candidates.append(models.ProductLineItem(sku=key, description=match_name))
+            line = models.PrunedCatalogPerGroceryListLine(
+                query=line_item.query,
+                product=line_item.product,
+                quantity=line_item.quantity,
+                unit=line_item.unit,
+                candidates=candidates,
+            )
+            pruned_list.append(line)
 
-        self.logger.debug(f"Got {pruned_catalog=}")
-        final_product_list = [
-            models.ProductLineItem(sku=k, description=v)
-            for k, v in pruned_catalog.items()
-        ]
-        return models.PrunedCatalog(catalog=final_product_list)
+        self.logger.debug(f"Successfully pruned catalog, {len(pruned_list)=}")
+        return models.PrunedCatalogList(lines=pruned_list)
