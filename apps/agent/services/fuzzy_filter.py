@@ -42,7 +42,9 @@ class FuzzyFilterService:
             candidates = []
             # matches is a list of (product_description, score, sku)
             for match_name, score, key in matches:
-                candidates.append(models.ProductLineItem(sku=key, description=match_name))
+                candidates.append(
+                    models.ProductLineItem(sku=key, description=match_name)
+                )
             line = models.PrunedCatalogPerGroceryListLine(
                 query=line_item.query,
                 product=line_item.product,
