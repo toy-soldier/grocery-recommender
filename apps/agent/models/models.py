@@ -85,6 +85,7 @@ class AgentRecommendationListPerGroceryListLine(BaseModel):
     query: str
     suggestions: list[AgentRecommendationLineItem]
 
+
 class AgentRecommendationList(BaseModel):
     """Schema for the agent's final recommendation list."""
 
