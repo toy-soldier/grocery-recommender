@@ -1,0 +1,22 @@
+{
+    "grocery_list": [
+        {
+            "product": "sardines",
+            "quantity": 3,
+            "query": "3 cans sardines",
+            "unit": "cans"
+        },
+        {
+            "product": "bread",
+            "quantity": 1,
+            "query": "1 loaf of bread",
+            "unit": "loaf"
+        },
+        {
+            "product": "lemonade",
+            "quantity": null,
+            "query": "fresh lemonade",
+            "unit": null
+        }
+    ]
+}

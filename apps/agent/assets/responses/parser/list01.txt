@@ -1,0 +1,6 @@
+{
+  "grocery_list": [
+    {"query": "3 packs of milk", "product": "milk", "quantity": 3.0, "unit": "packs"},
+    {"query": "1 bag of sugar", "product": "sugar", "quantity": 1.0, "unit": "bag"}
+  ]
+}

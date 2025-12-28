@@ -1,0 +1,40 @@
+{
+    "grocery_list": [
+        {
+            "product": "carrots",
+            "quantity": null,
+            "query": "carrots",
+            "unit": null
+        },
+        {
+            "product": "broccoli",
+            "quantity": null,
+            "query": "brokoli",
+            "unit": null
+        },
+        {
+            "product": "cauliflower",
+            "quantity": null,
+            "query": "cauliflower",
+            "unit": null
+        },
+        {
+            "product": "corn",
+            "quantity": null,
+            "query": "corn",
+            "unit": null
+        },
+        {
+            "product": "cabbage",
+            "quantity": null,
+            "query": "cabbage",
+            "unit": null
+        },
+        {
+            "product": "tomatoes",
+            "quantity": null,
+            "query": "tomatoes",
+            "unit": null
+        }
+    ]
+}

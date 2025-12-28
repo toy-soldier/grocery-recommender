@@ -1,0 +1,28 @@
+{
+    "grocery_list": [
+        {
+            "product": "yoghurt",
+            "quantity": 12,
+            "query": "12 packs of yoghurt",
+            "unit": "packs"
+        },
+        {
+            "product": "water",
+            "quantity": 4,
+            "query": "4l of water",
+            "unit": "l"
+        },
+        {
+            "product": "tuna",
+            "quantity": 1,
+            "query": "1 tuna in can",
+            "unit": "can"
+        },
+        {
+            "product": "apple",
+            "quantity": 4,
+            "query": "four apple",
+            "unit": null
+        }
+    ]
+}

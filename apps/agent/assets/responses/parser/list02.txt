@@ -1,0 +1,28 @@
+{
+    "grocery_list": [
+        {
+            "product": "popcorn",
+            "quantity": 5,
+            "query": "popcorn, 5",
+            "unit": null
+        },
+        {
+            "product": "cookies",
+            "quantity": 3,
+            "query": "3 cookies",
+            "unit": null
+        },
+        {
+            "product": "cola",
+            "quantity": 6,
+            "query": "6 cans of cola",
+            "unit": "cans"
+        },
+        {
+            "product": "orange juice",
+            "quantity": 4,
+            "query": "4 bottles of orange juice",
+            "unit": "bottles"
+        }
+    ]
+}

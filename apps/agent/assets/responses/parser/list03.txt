@@ -1,0 +1,28 @@
+{
+    "grocery_list": [
+        {
+            "product": "bananas",
+            "quantity": null,
+            "query": "bananas",
+            "unit": null
+        },
+        {
+            "product": "mangoes",
+            "quantity": null,
+            "query": "mangoes",
+            "unit": null
+        },
+        {
+            "product": "strawberrys",
+            "quantity": null,
+            "query": "strawberrys",
+            "unit": null
+        },
+        {
+            "product": "orange",
+            "quantity": null,
+            "query": "orange",
+            "unit": null
+        }
+    ]
+}
