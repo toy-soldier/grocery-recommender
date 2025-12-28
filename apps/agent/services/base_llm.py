@@ -1,9 +1,10 @@
 """This module defines the BaseLLMService class."""
 
+import json
 import logging
 import pathlib
 
-from agent.models import models
+from apps.agent.models import models
 from apps.agent.clients import openai_client
 
 
@@ -35,6 +36,22 @@ class BaseLLMService:
 
     def return_mocked_response(
         self, filename: str
-    ) -> models.ParsedGroceryList | models.LLMRecommendationList:
+    ) -> models.ParsedGroceryList | models.LLMRecommendationList | None:
         """Return a mocked response based on the grocery list's filename."""
-        raise NotImplementedError
+        class_ = self.__class__.__name__
+        model = (
+            models.ParsedGroceryList
+            if class_ == "ParserService"
+            else models.LLMRecommendationList
+        )
+        resp = None
+        self.logger.debug(f"Returning mocked response for {filename} from {class_}...")
+        try:
+            content = json.load(
+                open(self.dummy_responses_folder / filename, mode="r", encoding="utf-8")
+            )
+            resp = model.model_validate(content)
+            self.logger.debug("Successfully retrieved mocked response for {filename}!")
+        except Exception as e:
+            self.logger.exception(f"Exception while retrieving mocked response: {e}")
+        return resp

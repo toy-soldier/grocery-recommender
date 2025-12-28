@@ -1,6 +1,6 @@
 """This module contains the application constants."""
 
-PARSER_LLM_MODEL = "gpt-4-o"
+PARSER_LLM_MODEL = "gpt-4o-mini"
 RECOMMENDER_LLM_MODEL = "gpt-3.5-turbo"
 
 PARSER_PROMPT_FILE = "assets/parser_prompt.txt"
