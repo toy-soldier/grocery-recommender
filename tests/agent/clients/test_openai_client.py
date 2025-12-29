@@ -183,7 +183,7 @@ class TestRequestJsonResponse:
 def simulate_validation_error() -> pydantic.ValidationError:
     """A helper function to simulate a validation error."""
     try:
-        models.ProductLineItem(description="Invalid product", sku="Invalid SKU")
+        models.ProductLineItem(full_name="Invalid product", sku="Invalid SKU")
     except pydantic.ValidationError as e:
         return e
 
@@ -196,7 +196,7 @@ class TestRequestStructuredResponse:
         client = openai_client.OpenAIClient("test_key", "test_model", mocker.Mock())
 
         mocked_structured_response = models.ProductLineItem(
-            description="Some product", sku=12345
+            full_name="Some product", sku=12345
         )
         mocked_function = mocked_openai.return_value.responses.parse
         mocked_function.return_value.output_parsed = mocked_structured_response
@@ -257,7 +257,7 @@ class TestRequestStructuredResponse:
         client = openai_client.OpenAIClient("test_key", "test_model", mocker.Mock())
 
         mocked_response = mocker.Mock(
-            output_parsed=models.ProductLineItem(description="Some product", sku=12345)
+            output_parsed=models.ProductLineItem(full_name="Some product", sku=12345)
         )
         mocked_function = mocked_openai.return_value.responses.parse
         mocked_function.side_effect = (

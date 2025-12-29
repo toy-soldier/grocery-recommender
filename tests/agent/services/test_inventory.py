@@ -6,6 +6,7 @@ import pytest
 import tenacity
 
 from apps.agent.dependencies import exceptions as exc
+from apps.agent.models import models
 from apps.agent.services import inventory as inv
 
 
@@ -73,7 +74,7 @@ def test_load_catalog_on_one_page(mocked_api_client, mocker):
     }
     mocked_api_client.return_value.get_product_listing.return_value = response
     service.load_catalog(100)
-    assert service.catalog == [{"full_name": "Test Product 35", "sku": 35}]
+    assert service.catalog == models.ProductCatalog(catalog=[models.ProductLineItem(full_name="Test Product 35", sku=35)])
 
 
 def test_load_catalog_on_multiple_pages(mocked_api_client, mocker):
@@ -81,7 +82,7 @@ def test_load_catalog_on_multiple_pages(mocked_api_client, mocker):
     expected_catalog = []
     for i in range(12):
         product = {"full_name": f"Test Product {i}", "sku": i}
-        expected_catalog.append(product)
+        expected_catalog.append(models.ProductLineItem(**product))
     client_responses = []
     for i in range(4):
         response = {"count": 3, "data": [], "next": "exists", "previous": "exists"}
@@ -101,7 +102,7 @@ def test_load_catalog_on_multiple_pages(mocked_api_client, mocker):
         client_responses
     )
     service.load_catalog(100)
-    assert service.catalog == expected_catalog
+    assert service.catalog == models.ProductCatalog(catalog=expected_catalog)
 
 
 def test_load_catalog_raises_exc_on_page_1(mocked_api_client, mocker):
@@ -111,7 +112,7 @@ def test_load_catalog_raises_exc_on_page_1(mocked_api_client, mocker):
         tenacity.RetryError(mocker.Mock())
     )
     service.load_catalog(100)
-    assert service.catalog == []
+    assert service.catalog == models.ProductCatalog(catalog=[])
 
 
 def test_load_catalog_raises_exc_on_page_2(mocked_api_client, mocker):
@@ -128,4 +129,4 @@ def test_load_catalog_raises_exc_on_page_2(mocked_api_client, mocker):
         tenacity.RetryError(mocker.Mock()),
     )
     service.load_catalog(100)
-    assert service.catalog == []
+    assert service.catalog == models.ProductCatalog(catalog=[])

@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 class ProductLineItem(BaseModel):
     """Schema for a product entry."""
 
-    description: str
+    full_name: str
     sku: int
 
 
@@ -20,7 +20,7 @@ class ParsedLineItem(BaseModel):
     """Schema for a line parsed from the user's grocery list."""
 
     query: str
-    product: str
+    product: str | None
     quantity: float | None = None
     unit: str | None = None
 
