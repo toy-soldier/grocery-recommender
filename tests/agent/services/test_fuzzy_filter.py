@@ -12,9 +12,9 @@ def test_filter_catalog_basic_match(mocker):
 
     catalog = models.ProductCatalog(
         catalog=[
-            models.ProductLineItem(sku=1, description="Whole Milk 1L"),
-            models.ProductLineItem(sku=2, description="Almond Milk Unsweetened"),
-            models.ProductLineItem(sku=3, description="Brown Eggs Large"),
+            models.ProductLineItem(sku=1, full_name="Whole Milk 1L"),
+            models.ProductLineItem(sku=2, full_name="Almond Milk Unsweetened"),
+            models.ProductLineItem(sku=3, full_name="Brown Eggs Large"),
         ]
     )
 
@@ -40,6 +40,42 @@ def test_filter_catalog_basic_match(mocker):
     assert {c.sku for c in line.candidates} == {1, 2}
 
 
+def test_filter_catalog_unparsed_line(mocker):
+    """Test that the service doesn't return candidates for an unparsed grocery list line."""
+    service = fuzzy_filter.FuzzyFilterService(
+        top_n=2, min_score=60, logger=mocker.Mock()
+    )
+
+    catalog = models.ProductCatalog(
+        catalog=[
+            models.ProductLineItem(sku=1, full_name="Whole Milk 1L"),
+            models.ProductLineItem(sku=2, full_name="Almond Milk Unsweetened"),
+            models.ProductLineItem(sku=3, full_name="Brown Eggs Large"),
+        ]
+    )
+
+    grocery_list = models.ParsedGroceryList(
+        grocery_list=[
+            models.ParsedLineItem(query="0", product=None),
+        ]
+    )
+
+    data = models.CatalogForFuzzyMatching(
+        catalog=catalog,
+        grocery_list=grocery_list,
+    )
+
+    result = service.filter_catalog(data)
+
+    assert isinstance(result, models.PrunedCatalogList)
+    assert len(result.lines) == 1
+
+    line = result.lines[0]
+    assert line.query == "0"
+    assert line.product is None
+    assert len(line.candidates) == 0
+
+
 def test_filter_catalog_respects_top_n_per_line(mocker):
     """
     Test that even when a grocery list line has multiple matches
@@ -51,9 +87,9 @@ def test_filter_catalog_respects_top_n_per_line(mocker):
 
     catalog = models.ProductCatalog(
         catalog=[
-            models.ProductLineItem(sku=1, description="Milk"),
-            models.ProductLineItem(sku=2, description="Oat Milk"),
-            models.ProductLineItem(sku=3, description="Soy Milk"),
+            models.ProductLineItem(sku=1, full_name="Milk"),
+            models.ProductLineItem(sku=2, full_name="Oat Milk"),
+            models.ProductLineItem(sku=3, full_name="Soy Milk"),
         ]
     )
 
@@ -91,8 +127,8 @@ def test_filter_catalog_respects_min_score(mocker):
 
     catalog = models.ProductCatalog(
         catalog=[
-            models.ProductLineItem(sku=1, description="Milk"),
-            models.ProductLineItem(sku=2, description="Eggs"),
+            models.ProductLineItem(sku=1, full_name="Milk"),
+            models.ProductLineItem(sku=2, full_name="Eggs"),
         ]
     )
 
@@ -130,7 +166,7 @@ def test_filter_catalog_empty_grocery_list(mocker):
 
     catalog = models.ProductCatalog(
         catalog=[
-            models.ProductLineItem(sku=1, description="Milk"),
+            models.ProductLineItem(sku=1, full_name="Milk"),
         ]
     )
 

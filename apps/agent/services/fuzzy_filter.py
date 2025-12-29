@@ -27,32 +27,45 @@ class FuzzyFilterService:
         store_catalog = data.catalog.catalog
         grocery_list = data.grocery_list.grocery_list
         self.logger.debug(f"Got {grocery_list=}, now pruning store catalog...")
-        products = {item.sku: item.description for item in store_catalog}
+        products = {item.sku: item.full_name for item in store_catalog}
 
         # For each item in the parsed grocery list, find top matches
         # extract() uses fuzz.WRatio by default
         for line_item in grocery_list:
-            matches = process.extract(
-                query=line_item.product,
-                choices=products,
-                limit=self.top_n,
-                score_cutoff=self.min_score,
-            )
-
-            candidates = []
-            # matches is a list of (product_description, score, sku)
-            for match_name, score, key in matches:
-                candidates.append(
-                    models.ProductLineItem(sku=key, description=match_name)
+            if not line_item.product:
+                self.logger.debug(
+                    f"Cannot generate candidates: problem parsing {line_item.query=}..."
                 )
-            line = models.PrunedCatalogPerGroceryListLine(
-                query=line_item.query,
-                product=line_item.product,
-                quantity=line_item.quantity,
-                unit=line_item.unit,
-                candidates=candidates,
-            )
+                line = models.PrunedCatalogPerGroceryListLine(
+                    **line_item.model_dump(), candidates=[]
+                )
+            else:
+                line = self._process_parsed_line(products, line_item)
             pruned_list.append(line)
 
         self.logger.debug(f"Successfully pruned catalog, {len(pruned_list)=}")
         return models.PrunedCatalogList(lines=pruned_list)
+
+    def _process_parsed_line(
+        self, products: dict[int, str], line_item: models.ParsedLineItem
+    ) -> models.PrunedCatalogPerGroceryListLine:
+        """Process a line item from the grocery list."""
+        matches = process.extract(
+            query=line_item.product,
+            choices=products,
+            limit=self.top_n,
+            score_cutoff=self.min_score,
+        )
+
+        candidates = []
+        # matches is a list of (product_description, score, sku)
+        for match_name, score, key in matches:
+            candidates.append(models.ProductLineItem(sku=key, full_name=match_name))
+        line = models.PrunedCatalogPerGroceryListLine(
+            query=line_item.query,
+            product=line_item.product,
+            quantity=line_item.quantity,
+            unit=line_item.unit,
+            candidates=candidates,
+        )
+        return line
