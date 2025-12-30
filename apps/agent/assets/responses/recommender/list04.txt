@@ -1,0 +1,53 @@
+{
+    "recommendations": [
+        {
+            "query": "3 cans sardines",
+            "suggestions": [
+                {
+                    "confidence": 85,
+                    "full_name": "Frostbite canned sardines - 155g",
+                    "sku": 51037
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Twilight canned sardines - 155g",
+                    "sku": 51309
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Horizon canned sardines - 155g",
+                    "sku": 51751
+                },
+                {
+                    "confidence": 70,
+                    "full_name": "Evergreen canned sardines - 155g",
+                    "sku": 54420
+                }
+            ]
+        },
+        {
+            "query": "1 loaf of bread",
+            "suggestions": []
+        },
+        {
+            "query": "fresh lemonade",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Sapphire lemonade - 1L",
+                    "sku": 51598
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Avalanche lemonade - 1L",
+                    "sku": 52584
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Sapphire lemonade - 1L",
+                    "sku": 52924
+                }
+            ]
+        }
+    ]
+}

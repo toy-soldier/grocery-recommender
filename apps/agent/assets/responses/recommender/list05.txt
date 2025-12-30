@@ -1,0 +1,144 @@
+{
+    "recommendations": [
+        {
+            "query": "carrots",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Inferno carrot - 100g",
+                    "sku": 50510
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Horizon carrot - 100g",
+                    "sku": 53196
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Luminous carrot - 100g",
+                    "sku": 54046
+                }
+            ]
+        },
+        {
+            "query": "brokoli",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Horizon broccoli - 400g",
+                    "sku": 51836
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Wildfire broccoli - 400g",
+                    "sku": 52703
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Solaris broccoli - 400g",
+                    "sku": 53043
+                }
+            ]
+        },
+        {
+            "query": "cauliflower",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Evergreen cauliflower - 500g",
+                    "sku": 50493
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Inferno cauliflower - 500g",
+                    "sku": 51020
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Solaris cauliflower - 500g",
+                    "sku": 51547
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Radiant cauliflower - 500g",
+                    "sku": 53247
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Evergreen cauliflower - 500g",
+                    "sku": 53417
+                }
+            ]
+        },
+        {
+            "query": "corn",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Ripple canned corn - 425g",
+                    "sku": 50782
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Luminous canned corn - 425g",
+                    "sku": 51700
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Inferno canned corn - 425g",
+                    "sku": 52057
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Sunrise canned corn - 425g",
+                    "sku": 52108
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Horizon canned corn - 425g",
+                    "sku": 53961
+                }
+            ]
+        },
+        {
+            "query": "cabbage",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Wildfire cabbage - 1kg",
+                    "sku": 53213
+                }
+            ]
+        },
+        {
+            "query": "tomatoes",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Phoenix canned tomatoes - 450g",
+                    "sku": 52380
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Avalanche canned tomatoes - 450g",
+                    "sku": 52567
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Avalanche canned tomatoes - 450g",
+                    "sku": 53366
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Cascade tomato - 120g",
+                    "sku": 53009
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Terra tomato - 120g",
+                    "sku": 53434
+                }
+            ]
+        }
+    ]
+}

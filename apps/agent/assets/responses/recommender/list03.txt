@@ -1,0 +1,79 @@
+{
+    "recommendations": [
+        {
+            "query": "bananas",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Starlight banana - 120g",
+                    "sku": 53026
+                }
+            ]
+        },
+        {
+            "query": "mangoes",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Moonbeam mango - 200g",
+                    "sku": 50629
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Sapphire mango - 200g",
+                    "sku": 53111
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Phoenix mango - 200g",
+                    "sku": 53842
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Galaxy mango - 200g",
+                    "sku": 55100
+                }
+            ]
+        },
+        {
+            "query": "strawberrys",
+            "suggestions": [
+                {
+                    "confidence": 95,
+                    "full_name": "Luminous strawberries - 250g",
+                    "sku": 54760
+                }
+            ]
+        },
+        {
+            "query": "orange",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Frostbite orange - 160g",
+                    "sku": 50680
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Inferno orange - 160g",
+                    "sku": 51360
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Cascade orange juice - 1L",
+                    "sku": 51513
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Zephyr orange juice - 1L",
+                    "sku": 51802
+                },
+                {
+                    "confidence": 70,
+                    "full_name": "Eclipse orange - 160g",
+                    "sku": 51972
+                }
+            ]
+        }
+    ]
+}

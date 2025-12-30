@@ -1,0 +1,89 @@
+{
+    "recommendations": [
+        {
+            "query": "12 packs of yoghurt",
+            "suggestions": [
+                {
+                    "confidence": 80,
+                    "full_name": "Evergreen yogurt - 200g",
+                    "sku": 50544
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Solaris yogurt - 200g",
+                    "sku": 51292
+                }
+            ]
+        },
+        {
+            "query": "4l of water",
+            "suggestions": [
+                {
+                    "confidence": 70,
+                    "full_name": "Vortex bottled water - 500ml",
+                    "sku": 51139
+                },
+                {
+                    "confidence": 65,
+                    "full_name": "Terra bottled water - 500ml",
+                    "sku": 53230
+                }
+            ]
+        },
+        {
+            "query": "1 tuna in can",
+            "suggestions": [
+                {
+                    "confidence": 85,
+                    "full_name": "Frostbite canned tuna - 170g",
+                    "sku": 50374
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Galaxy tuna steak - 200g",
+                    "sku": 50646
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Ripple canned tuna - 170g",
+                    "sku": 51564
+                },
+                {
+                    "confidence": 70,
+                    "full_name": "Silverstone canned tuna - 170g",
+                    "sku": 52176
+                },
+                {
+                    "confidence": 65,
+                    "full_name": "Sapphire canned tuna - 170g",
+                    "sku": 53128
+                }
+            ]
+        },
+        {
+            "query": "four apple",
+            "suggestions": [
+                {
+                    "confidence": 80,
+                    "full_name": "Blizzard apple - 180g",
+                    "sku": 50408
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Frostbite apple - 180g",
+                    "sku": 51156
+                },
+                {
+                    "confidence": 70,
+                    "full_name": "Nova apple - 180g",
+                    "sku": 51445
+                },
+                {
+                    "confidence": 65,
+                    "full_name": "Starlight apple - 180g",
+                    "sku": 53808
+                }
+            ]
+        }
+    ]
+}

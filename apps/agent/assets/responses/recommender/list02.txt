@@ -1,0 +1,84 @@
+{
+    "recommendations": [
+        {
+            "query": "popcorn, 5",
+            "suggestions": [
+                {
+                    "confidence": 85,
+                    "full_name": "Luminous popcorn - 100g",
+                    "sku": 51768
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Eclipse popcorn - 100g",
+                    "sku": 54063
+                }
+            ]
+        },
+        {
+            "query": "3 cookies",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Acme cookies - 200g",
+                    "sku": 51241
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Acme cookies - 200g",
+                    "sku": 51717
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Inferno cookies - 200g",
+                    "sku": 52958
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Solaris cookies - 200g",
+                    "sku": 54947
+                }
+            ]
+        },
+        {
+            "query": "6 cans of cola",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Wildfire cola - 330ml",
+                    "sku": 50085
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Silverstone cola - 330ml",
+                    "sku": 52278
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Sunrise cola - 330ml",
+                    "sku": 52856
+                }
+            ]
+        },
+        {
+            "query": "4 bottles of orange juice",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Cascade orange juice - 1L",
+                    "sku": 51513
+                },
+                {
+                    "confidence": 85,
+                    "full_name": "Zephyr orange juice - 1L",
+                    "sku": 51802
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Galaxy orange juice - 1L",
+                    "sku": 52720
+                }
+            ]
+        }
+    ]
+}

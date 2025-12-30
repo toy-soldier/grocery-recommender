@@ -1,0 +1,83 @@
+{
+    "recommendations": [
+        {
+            "query": "1 kilo chicken wings",
+            "suggestions": [
+                {
+                    "confidence": 75,
+                    "full_name": "Nova whole chicken - 2kg",
+                    "sku": 53060
+                },
+                {
+                    "confidence": 75,
+                    "full_name": "Wildfire whole chicken - 2kg",
+                    "sku": 54658
+                }
+            ]
+        },
+        {
+            "query": "500g beef, ground",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Luminous ground beef - 500g",
+                    "sku": 50238
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Solaris ground beef - 500g",
+                    "sku": 51666
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Sapphire ground beef - 500g",
+                    "sku": 51819
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Moonbeam ground beef - 500g",
+                    "sku": 52414
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Evergreen ground beef - 500g",
+                    "sku": 53893
+                }
+            ]
+        },
+        {
+            "query": "1 kilo hotdogs",
+            "suggestions": []
+        },
+        {
+            "query": "5 packks of ham",
+            "suggestions": [
+                {
+                    "confidence": 80,
+                    "full_name": "Galaxy ham slices - 200g",
+                    "sku": 51632
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Nova ham slices - 200g",
+                    "sku": 52346
+                },
+                {
+                    "confidence": 80,
+                    "full_name": "Nova ham slices - 200g",
+                    "sku": 53570
+                },
+                {
+                    "confidence": 70,
+                    "full_name": "Sunrise pastrami - 200g",
+                    "sku": 51088
+                },
+                {
+                    "confidence": 70,
+                    "full_name": "Acme pastrami - 200g",
+                    "sku": 51105
+                }
+            ]
+        }
+    ]
+}

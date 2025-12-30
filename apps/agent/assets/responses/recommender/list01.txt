@@ -1,0 +1,33 @@
+{
+    "recommendations": [
+        {
+            "query": "3 packs of milk",
+            "suggestions": [
+                {
+                    "confidence": 90,
+                    "full_name": "Zephyr milk - 1L",
+                    "sku": 50051
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Solaris milk - 1L",
+                    "sku": 50476
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Blizzard milk - 1L",
+                    "sku": 50935
+                },
+                {
+                    "confidence": 90,
+                    "full_name": "Zephyr milk - 1L",
+                    "sku": 52431
+                }
+            ]
+        },
+        {
+            "query": "1 bag of sugar",
+            "suggestions": []
+        }
+    ]
+}
