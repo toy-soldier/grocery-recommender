@@ -6,7 +6,7 @@ import tenacity
 
 from apps.agent.dependencies import constants
 from apps.agent.models import models
-from apps.agent.services.parser import ParserService
+from apps.agent.services import parser as p
 
 
 def test_parse_grocery_text_success(mocked_openai_client, mocker, tmp_path):
@@ -22,7 +22,7 @@ def test_parse_grocery_text_success(mocked_openai_client, mocker, tmp_path):
         ]
     )
 
-    parser = ParserService(
+    parser = p.ParserService(
         api_key="fake-key",
         model_name=constants.PARSER_LLM_MODEL,
         base_prompt_file=mocker.Mock(),
@@ -41,7 +41,7 @@ def test_parse_grocery_text_success(mocked_openai_client, mocker, tmp_path):
 
 def test_parse_grocery_text_failure(mocked_openai_client, mocker, tmp_path):
     """Test that parse_grocery_text() returns None if there are errors."""
-    parser = ParserService(
+    parser = p.ParserService(
         api_key="fake-key",
         model_name=constants.PARSER_LLM_MODEL,
         base_prompt_file=mocker.Mock(),
@@ -68,8 +68,8 @@ def test_return_mocked_response_success(mocker, tmp_path):
     file = tmp_path / "list01.txt"
     file.write_text(json.dumps(content))
 
-    parser = ParserService(
-        api_key="fake-key",
+    parser = p.ParserService(
+        api_key=None,
         model_name=constants.PARSER_LLM_MODEL,
         base_prompt_file=mocker.Mock(),
         dummy_responses_folder=tmp_path,
@@ -84,8 +84,8 @@ def test_return_mocked_response_success(mocker, tmp_path):
 
 def test_return_mocked_response_missing_file(mocker, tmp_path):
     """Test that return_mocked_response() returns None on a file not found error."""
-    parser = ParserService(
-        api_key="fake-key",
+    parser = p.ParserService(
+        api_key=None,
         model_name=constants.PARSER_LLM_MODEL,
         base_prompt_file=mocker.Mock(),
         dummy_responses_folder=tmp_path,
@@ -102,8 +102,8 @@ def test_return_mocked_response_invalid_json(mocker, tmp_path):
     file = tmp_path / "bad.txt"
     file.write_text("{invalid json}")
 
-    parser = ParserService(
-        api_key="fake-key",
+    parser = p.ParserService(
+        api_key=None,
         model_name=constants.PARSER_LLM_MODEL,
         base_prompt_file=mocker.Mock(),
         dummy_responses_folder=tmp_path,

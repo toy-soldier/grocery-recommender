@@ -28,3 +28,31 @@ def mocked_openai_client(
     mocker: pytest_mock.plugin.MockerFixture,
 ) -> unittest.mock.MagicMock:
     return mocker.patch("apps.agent.services.base_llm.openai_client.OpenAIClient")
+
+
+@pytest.fixture
+def mocked_parser_service(
+    mocker: pytest_mock.plugin.MockerFixture,
+) -> unittest.mock.MagicMock:
+    return mocker.patch("apps.agent.services.parser.ParserService")
+
+
+@pytest.fixture
+def mocked_recommender_service(
+    mocker: pytest_mock.plugin.MockerFixture,
+) -> unittest.mock.MagicMock:
+    return mocker.patch("apps.agent.services.recommender.RecommenderService")
+
+
+@pytest.fixture
+def mocked_inventory_service(
+    mocker: pytest_mock.plugin.MockerFixture,
+) -> unittest.mock.MagicMock:
+    return mocker.patch("apps.agent.services.inventory.InventoryService")
+
+
+@pytest.fixture
+def mocked_fuzzy_service(
+    mocker: pytest_mock.plugin.MockerFixture,
+) -> unittest.mock.MagicMock:
+    return mocker.patch("apps.agent.services.fuzzy_filter.FuzzyFilterService")

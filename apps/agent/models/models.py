@@ -63,7 +63,7 @@ class LLMRecommendationListPerGroceryListLine(BaseModel):
     """Schema for the per-line recommendations."""
 
     query: str
-    recommendations: list[LLMRecommendationLineItem]
+    suggestions: list[LLMRecommendationLineItem]
 
 
 class LLMRecommendationList(BaseModel):
