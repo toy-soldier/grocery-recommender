@@ -40,38 +40,76 @@ class GroceryAgent:
         self.logger = logger
         self.logger.debug("Successfully initialized the agent!")
 
-    def load_catalog(self) -> None:
+    def load_catalog(self, source: str) -> None:
         """Load the store catalog."""
         self.logger.debug("Loading store catalog...")
-        self.inventory_svc.load_catalog()
+        self.inventory_svc.load_catalog(source=source)
         self.logger.debug("Successfully loaded store catalog!")
 
     def process(self, filename: str, grocery_text: str) -> dict[str, Any]:
         """
         Process the grocery list depending on whether the OpenAI API key exists.
         If the key is present, the normal processing flow is followed, i.e.
-        parser -> fuzzy filter -> recommender -> inventory
-        Otherwise, the outputs of the parser and recommender are mocked,
-        and fuzzy filter is skipped.
+            parser -> fuzzy filter -> recommender -> inventory
+        Otherwise, the parser & recommender outputs are mocked, and fuzzy filter is skipped.
         """
         self.logger.debug(f"Processing grocery list, {filename=}, {grocery_text=}...")
+        if not self.inventory_svc.catalog.catalog:
+            self.logger.warning(
+                "No store catalog found, no recommendations can be generated!"
+            )
+            return models.AgentRecommendationList(recommendations=[]).model_dump()
+
         if self.api_key:
             self.logger.debug("Will be using LLMs for parsing and recommending...")
-            parsed_grocery_text = self.parser_svc.parse_grocery_text(grocery_text)
-            data = models.CatalogForFuzzyMatching(
-                grocery_list=parsed_grocery_text, catalog=self.inventory_svc.catalog
-            )
-            pruned_catalog_list = self.fuzzy_filter_svc.filter_catalog(data)
-            llm_recommendations = self.recommender_svc.recommend_products(
-                pruned_catalog_list
-            )
+            llm_recommendations = self._use_llms(grocery_text)
         else:
             self.logger.debug("Will be mocking parsing and recommending...")
-            self.parser_svc.return_mocked_response(filename)
-            llm_recommendations = self.recommender_svc.return_mocked_response(filename)
+            llm_recommendations = self._mock_llms(filename)
         resp = self.inventory_svc.get_final_recommendations(llm_recommendations)
         self.logger.debug("Successfully processed grocery list!")
         return resp.model_dump()
+
+    def _use_llms(self, grocery_text: str) -> models.LLMRecommendationList:
+        """Use LLMs for parsing and recommending."""
+        llm_recommendations = models.LLMRecommendationList(recommendations=[])
+        parsed_grocery_text = self.parser_svc.parse_grocery_text(grocery_text)
+        if not parsed_grocery_text:
+            self.logger.warning(
+                f"Problem parsing the grocery list; setting {llm_recommendations=}!"
+            )
+            return llm_recommendations
+        data = models.CatalogForFuzzyMatching(
+            grocery_list=parsed_grocery_text, catalog=self.inventory_svc.catalog
+        )
+        pruned_catalog_list = self.fuzzy_filter_svc.filter_catalog(data)
+        if not pruned_catalog_list:
+            self.logger.warning(
+                f"Problem pruning the store catalog; setting {llm_recommendations=}!"
+            )
+            return llm_recommendations
+        product_recommendations = self.recommender_svc.recommend_products(
+            pruned_catalog_list
+        )
+        if not product_recommendations:
+            self.logger.warning(
+                f"Problem retrieving product recommendations; setting {llm_recommendations=}!"
+            )
+        else:
+            llm_recommendations = product_recommendations
+
+        return llm_recommendations
+
+    def _mock_llms(self, filename: str) -> models.LLMRecommendationList:
+        """Mock responses of LLMs for parsing and recommending."""
+        parsed_grocery_text = self.parser_svc.return_mocked_response(filename)
+        llm_recommendations = self.recommender_svc.return_mocked_response(filename)
+        if not parsed_grocery_text or not llm_recommendations:
+            llm_recommendations = models.LLMRecommendationList(recommendations=[])
+            self.logger.warning(
+                f"Problem retrieving mocked response; setting {llm_recommendations=}!"
+            )
+        return llm_recommendations
 
 
 def init_logger() -> logging.Logger:
@@ -95,7 +133,7 @@ def init_logger() -> logging.Logger:
     return logger
 
 
-def init_agent() -> GroceryAgent:
+def init_agent(catalog_source: str = "api") -> GroceryAgent:
     """Initialize the agent."""
     logger = init_logger()
     logger.info("Initializing agent...")
@@ -121,22 +159,21 @@ def init_agent() -> GroceryAgent:
         min_score=constants.FUZZY_FILTER_MIN_SCORE,
         logger=logger,
     )
-
     grocery_agent = GroceryAgent(
         parser_svc, recommender_svc, inventory_svc, fuzzy_filter_svc, api_key, logger
     )
     logger.info("Done initializing agent.")
 
     logger.info("Retrieving store catalog...")
-    grocery_agent.load_catalog()
+    grocery_agent.load_catalog(source=catalog_source)
     logger.info("Done retrieving store catalog.")
     return grocery_agent
 
 
 def main() -> None:
     """The application's entry point."""
-    grocery_agent = init_agent()
-    filename = "list.txt"
+    grocery_agent = init_agent(catalog_source="file")
+    filename = "list01.txt"
     content = "<li/>3 packs of milk<li/>1 bag of sugar"
 
     grocery_agent.process(filename, content)
