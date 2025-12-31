@@ -75,7 +75,7 @@ class LLMRecommendationList(BaseModel):
 class AgentRecommendationLineItem(LLMRecommendationLineItem):
     """Schema for a product recommendation from the agent."""
 
-    quantity: int
+    qty_in_stock: int
     unit_price: float
 
 
