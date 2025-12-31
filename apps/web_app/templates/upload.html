@@ -9,14 +9,28 @@
 		{% endif %}
 
 		<p>Please upload your grocery list in plain text format, one product per line.</p>
-		<form action="http://localhost:5000/recommender" method="POST" enctype="multipart/form-data">
+		<form id="uploadForm" action="http://localhost:5000/recommender" method="POST" enctype="multipart/form-data">
 			<input type="file" name="file" /><p />
-			<input type="submit" value="Review my grocery list!" />
+			<input id="submitBtn" type="submit" value="Review my grocery list!" />
+            <span id="statusMessage" style="display:none;">Currently reviewing your list, please wait...</span>
 		</form>
 		<p>
 			<b><i>Sample file:</i></b><br />
 			<code>list.txt</code><i> containing: </i><br />
-			<textarea rows="3" col="10">3 packs of milk		1 bag of sugar</textarea>
+			<textarea rows="3" cols="20">3 packs of milk		1 bag of sugar</textarea>
 		</p>
+
+        <script>
+            const form = document.getElementById("uploadForm");
+            const submitBtn = document.getElementById("submitBtn");
+            const statusMessage = document.getElementById("statusMessage");
+
+            form.addEventListener("submit", function () {
+                submitBtn.disabled = true;          // disable button
+                submitBtn.value = "Submitting...";
+                statusMessage.style.display = "inline";
+            });
+        </script>
+
 	</body>
 </html>

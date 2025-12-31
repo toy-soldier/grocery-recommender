@@ -39,17 +39,17 @@ def transform_response(
 def transform_suggestion(suggestion: dict[str, str | int | float]) -> str:
     """Convert the suggestion to HTML."""
     conf = suggestion["confidence"]
-    desc = suggestion["description"]
-    qty = suggestion["quantity"]
+    desc = suggestion["full_name"]
+    qty = suggestion["qty_in_stock"]
     sku = suggestion["sku"]
     pr = suggestion["unit_price"]
 
-    if conf >= 70:
-        message = '<font color="green">Highly recommended!</font><br />'
-    elif conf >= 40:
-        message = '<font color="orange">Recommended</font><br />'
+    if conf >= 85:
+        message = '<font color="green"><b><i>Highly recommended!</i></b></font><br />'
+    elif conf >= 60:
+        message = '<font color="orange"><b><i>Recommended</i></b></font><br />'
     else:
-        message = '<font color="red">You may also like...</font><br />'
+        message = '<font color="red"><b><i>You may also like...</i></b></font><br />'
 
     checkbox = f'<input type="checkbox" id={sku} value={sku} name="sku" />'
     label = f"<label for={sku}>{create_dropdown(sku, qty)} {desc} (at ${pr} per unit)</label>"

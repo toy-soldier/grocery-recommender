@@ -5,36 +5,36 @@
       "suggestions": [
         {
           "sku": 54321,
-          "description": "Tulip Whole Milk 1L",
-          "quantity": 3,
+          "full_name": "Tulip Whole Milk 1L",
+          "qty_in_stock": 3,
           "unit_price": 3.99,
           "confidence": 89
         },
         {
           "sku": 64755,
-          "description": "Violet Low-fat Cow's Milk 500mL",
-          "quantity": 3,
+          "full_name": "Violet Low-fat Cow's Milk 500mL",
+          "qty_in_stock": 3,
           "unit_price": 5.47,
           "confidence": 69
         },
         {
           "sku": 42268,
-          "description": "Violet Powdered Skim Milk 1kg",
-          "quantity": 3,
+          "full_name": "Violet Powdered Skim Milk 1kg",
+          "qty_in_stock": 3,
           "unit_price": 4.75,
           "confidence": 43
         },
         {
           "sku": 75661,
-          "description": "Saver Goat's milk 1L",
-          "quantity": 3,
+          "full_name": "Saver Goat's milk 1L",
+          "qty_in_stock": 3,
           "unit_price": 2.10,
           "confidence": 33
         },
         {
           "sku": 88672,
-          "description": "Premium Dairy 1L",
-          "quantity": 3,
+          "full_name": "Premium Dairy 1L",
+          "qty_in_stock": 3,
           "unit_price": 3.99,
           "confidence": 16
         }
@@ -45,8 +45,8 @@
       "suggestions": [
         {
           "sku": 96554,
-          "description": "Sweet's White Sugar 250g",
-          "quantity": 1,
+          "full_name": "Sweet's White Sugar 250g",
+          "qty_in_stock": 1,
           "unit_price": 1.89,
           "confidence": 99
         }
