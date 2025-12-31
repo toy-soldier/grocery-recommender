@@ -42,10 +42,11 @@ API Server (product catalog / inventory)
 ## Data Flow Summary
 
 1. The agent starts and requests the entire store catalog from the API Server.
-2. The agent parses the user’s grocery list via LLM.
-3. For each parsed item, the agent queries the API Server for matches or details.
-4. The agent produces a structured recommendation payload.
-5. The web application renders this payload into a final confirmation page.
+2. The agent parses the user’s grocery list.  
+3. Based on the parsed grocery list, the agent recommends products from the store.
+4. For each product, the agent queries the API Server for details.
+5. The agent produces a structured recommendation payload.
+6. The web application renders this payload into a final confirmation page.
 
 This clear separation ensures that **product data responsibilities remain isolated**, allowing the agent and UI to evolve independently.
 
@@ -91,12 +92,12 @@ The server will be available at:
 
 ## Endpoints
 
-| Endpoint                 | Method | Description                            |
-| ------------------------ | ------ | -------------------------------------- |
-| `/`                | GET    | Homepage endpoint                  |
-| `/health`                | GET    | Health check endpoint                  |
-| `/api/v1/products`              | GET    | Returns a product listing             |
-| `/api/v1/products/{product_id}` | GET    | Returns details for a specific product |
+| Endpoint                       | Method | Description                            |
+| ------------------------------ | ------ | -------------------------------------- |
+| `/`                            | GET    | Homepage endpoint                      |
+| `/health`                      | GET    | Health check endpoint                  |
+| `/api/v1/products`             | GET    | Returns a product listing              |
+| `/api/v1/products/{product_id}`| GET    | Returns details for a specific product |
 
 ---
 

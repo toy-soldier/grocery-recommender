@@ -32,9 +32,9 @@ sequenceDiagram
     WebApp ->> Agent: file contents
 
     %% AI logic: two-model architecture (single participant, two calls)
-    Agent ->> OpenAI: GPT-4 parses grocery list (structured JSON)
-    OpenAI ->> Agent: parsed JSON
-    Agent ->> OpenAI: GPT-3 recommends products using parsed JSON + catalog
+    Agent ->> OpenAI: Parsing model parses grocery list
+    OpenAI ->> Agent: parsed grocery list
+    Agent ->> OpenAI: Recommendation model selects SKUs
     OpenAI ->> Agent: recommendations
 
     loop each product recommendation
@@ -75,46 +75,63 @@ Finally, in **steps 16–17**, the **agent** consolidates everything and sends a
 
 ## Setup Instructions
 
-First ensure that `uv` is already setup on your machine.  More information on `uv` is available at [https://docs.astral.sh/uv/]
+First ensure that `uv` is already set up on your machine.
+More information on `uv` is available at: [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
 
-1. Clone this repository to an appropriate folder on your local.  Assume this folder is at
+1. Clone this repository to an appropriate folder on your local machine. Assume this folder is at:
 
-    ```bash
-    path/to/repository/grocery-recommender/
-    ```
+   ```bash
+   path/to/repository/grocery-recommender/
+   ```
 
-2. Create a virtual environment for the project, and download project dependencies.  At `path/to/repository/grocery-recommender/`, open a terminal and run
+2. Create a virtual environment and install dependencies. From the project root, run:
 
-    ```bash
-    uv sync
-    ```
+   ```bash
+   uv sync
+   ```
 
-3. Create the environment file
+3. Create the environment file:
 
-    ```bash
-    path/to/repository/grocery-recommender/.env
-    ```
+   ```bash
+   path/to/repository/grocery-recommender/.env
+   ```
 
-    (refer to section **Environment Setup** below for details).
+   (Refer to **Environment Setup** below for details.)
 
-4. Optionally execute the unit tests.  At `path/to/repository/grocery-recommender/`, open a terminal and run the tests (refer to section **Unit Testing** below for details).
+4. Optionally execute the unit tests (see **Unit Testing** below).
 
-5. Execute each application, in this order:
-    1. API Server (`apps/api_server`)
-    2. Agent (`apps/agent`)
-    3. Web Application (`apps/web_app`)
+5. Start each application in the following order:
 
-    Refer to each application's `README.MD` for execution details.
+   1. API Server (`apps/api_server`)
+   2. Web Application (`apps/web_app`)
+
+   Refer to each application’s `README.md` for execution details.
 
 ---
 
 ## Environment Setup
 
-The project uses an environment file (`.env`) for credentials:
+The project uses an environment file (`.env`) for credentials and runtime configuration.
+
+To enable live OpenAI-powered parsing and recommendations, add:
 
 ```bash
 OPENAI_API_KEY=<your OpenAI API key>
 ```
+
+### Dummy Mode
+
+If the `.env` file is missing or `OPENAI_API_KEY` is not set, the system automatically runs in **dummy mode**.
+
+In dummy mode:
+
+- No external OpenAI API calls are made.
+- The Agent returns **pre-recorded parser and recommender responses**.
+- Responses are selected based on the uploaded grocery list filename.
+- This allows the entire system to run deterministically without external dependencies.
+
+Dummy mode is intended for **development, testing, and demo purposes**.
+See the **Agent README** for details on the sample files and response mappings.
 
 ---
 
@@ -205,7 +222,7 @@ The project’s AI logic is organized around a **two-model concept** — impleme
 
 ---
 
-### 1. Parsing Model (GPT-4)
+### 1. Parsing Model (Powerful LLM)
 
 - Handles natural-language understanding.  
 - Interprets free-form grocery list entries (e.g., “3 packs of almond milk”) into structured data containing `item`, `quantity`, and `unit`.  
@@ -214,19 +231,20 @@ The project’s AI logic is organized around a **two-model concept** — impleme
 
 ---
 
-### 2. Recommendation Model (GPT-3)
+### 2. Recommendation Model (Lightweight LLM)
 
-- Takes the parsed result and cross-references it with the store catalog.  
-- Returns the best product matches (SKUs), match confidence, and any additional metadata required (price, inventory).  
-- Requires less reasoning power than parsing because the input is already structured, reducing cost and latency while maintaining accuracy.  
-- In production this is a strong fit for a RAG (retrieval-augmented generation) approach or a lightweight model backed by embeddings / vector search.
+- Takes the parsed grocery list output and a **filtered subset of the store catalog.**
+- Selects the most relevant SKUs and assigns a confidence score to each recommendation.
+- Returns results using strict structured outputs, validated against a predefined schema.
+- Requires less reasoning power than parsing because the input is already structured and the candidate set is constrained.
+- In production, this stage would typically be replaced by a **vector search / RAG (retrieval-augmented generation) pipeline** backed by embeddings and a retrieval system.
 
 ---
 
 ### Rationale for model selection
 
-- Parsing is **precision-critical**, so a powerful model (GPT-4) is used.  
-- Recommendation is **context-driven** and uses structured input, so a lighter model (GPT-3) suffices.  
+- Parsing is **precision-critical**, so a powerful model is used.  
+- Recommendation is **context-driven** and uses structured input, so a lighter model suffices.  
 - This pattern demonstrates thoughtful resource allocation and clearly illustrates the **two-model architecture**.  
 
 > **Note:** Both models are implemented via OpenAI in this demo for simplicity.  
@@ -237,4 +255,4 @@ The project’s AI logic is organized around a **two-model concept** — impleme
 
 ### Agent Design Pattern — Plan-and-Execute
 
-This system follows a simplified **Plan-and-Execute agent pattern**, where one model interprets user input (“planning”) and another model executes based on that structured output. In this design, the parsing performed by GPT-4 acts as the planning phase, producing a well-defined JSON representation of the user’s intent. The recommendation phase, handled by GPT-3, acts as the execution stage, using that structured plan together with the store catalog to generate product matches. This mirrors the architecture used in many real-world production AI pipelines: deterministic orchestration with clearly separated model responsibilities, rather than an autonomous free-form agent loop.
+This system follows a simplified **Plan-and-Execute agent pattern**, where one model interprets user input (“planning”) and another model executes based on that structured output. In this design, the parsing acts as the planning phase, producing a well-defined representation of the user’s intent. The recommendation phase acts as the execution stage, using that structured plan together with the store catalog to generate product matches. This mirrors the architecture used in many real-world production AI pipelines: deterministic orchestration with clearly separated model responsibilities, rather than an autonomous free-form agent loop.
