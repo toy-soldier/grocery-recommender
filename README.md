@@ -142,7 +142,7 @@ All three applications in this project include unit tests implemented with **pyt
 Run the full test suite with:
 
 ```bash
-pytest --cov-config=tests/results/.coveragerc | tee tests/results/results.txt
+uv run pytest --cov-config=tests/results/.coveragerc | tee tests/results/results.txt
 ```
 
 This command will:

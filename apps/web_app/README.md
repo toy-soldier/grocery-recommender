@@ -146,7 +146,7 @@ The tests cover:
 To run only the web app tests:
 
 ```bash
-pytest --cov apps/web_app tests/web_app
+ uv run pytest --cov apps/web_app tests/web_app
 ```
 
 Mocks are used to avoid calling the real agent or the OpenAI API.

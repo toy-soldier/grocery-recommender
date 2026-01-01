@@ -176,7 +176,7 @@ Tests cover:
 Run only the Agent tests using:
 
 ```bash
-pytest --cov apps/agent tests/agent
+uv run pytest --cov apps/agent tests/agent
 ```
 
 Mocks are used to isolate LLM calls and API Server dependencies.

@@ -204,7 +204,7 @@ Tests cover:
 Run only the API Server tests using:
 
 ```bash
-pytest --cov apps/api_server tests/api_server
+uv run pytest --cov apps/api_server tests/api_server
 ```
 
 Mocks ensure fast, deterministic tests.
